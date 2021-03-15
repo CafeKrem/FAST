@@ -215,7 +215,12 @@ FASTMetamodelGenerator >> defineHierarchy [
 	variableExpression --|> #TNamedEntity.
 	variableExpression --|> tParameter.
 	
-	namedBehaviouralEntity --|> #TNamedEntity
+	namedBehaviouralEntity --|> #TNamedEntity.
+	
+	argumentDefinition  --|> definition.
+	objectDefinition  --|> definition. 
+	classDefinition --|> definition.
+	unknowDefinition  --|> definition
 ]
 
 { #category : #definition }
@@ -225,6 +230,7 @@ FASTMetamodelGenerator >> defineProperties [
 	entity
         property: #startPos type: #Number;
         property: #endPos type: #Number.
+	(definition property: #name type: #String ) comment: 'the variable Name'
 ]
 
 { #category : #definition }
@@ -243,6 +249,13 @@ FASTMetamodelGenerator >> defineRelations [
 	(((tWithParameters property: #parameters) comment: 'My parameters') <>-* ((tParameter property: #parameterOwner) comment: 'parameterOwner')). 
 	
 	(((tWithArguments property: #arguments) comment: 'My arguments') <>-* ((tArgument property: #argumentOwner) comment: 'my owner')).
+	
+	((tScopable property: #scope)  comment: 'a ScopableEntity contain a scope') <>- (scope property: #scopeOwner).
+	(scope property:#superScope ) *-<> (scope property: #subScopes).
+	(scope property: #definitions ) <>-* (definition  property: #scopeContainer).
+	1halt.
+	(definition property: #references) <>-* (   (builder getTraitNamed: #TNamedEntity ) property: #rdefinition ).
+	(objectDefinition property: #classDefinition) *-<> (classDefinition property: #instances)
 ]
 
 { #category : #definition }
