@@ -7,8 +7,8 @@ Class {
 	#traits : 'TEntityMetaLevelDependency',
 	#classTraits : 'TEntityMetaLevelDependency classTrait',
 	#instVars : [
-		'#endPos => FMProperty',
-		'#startPos => FMProperty'
+		'#startPos => FMProperty',
+		'#endPos => FMProperty'
 	],
 	#category : #'FAST-Core-Model-Entities'
 }

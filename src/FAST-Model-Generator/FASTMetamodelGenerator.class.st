@@ -14,7 +14,6 @@ Class {
 		'nullPointerLiteral',
 		'stringLiteral',
 		'variableExpression',
-		'scopableEntity',
 		'behaviouralEntity',
 		'statement',
 		'expressionStatement',
@@ -27,7 +26,8 @@ Class {
 		'tWithArguments',
 		'tParameter',
 		'tWithParameters',
-		'entity'
+		'entity',
+		'tScopable'
 	],
 	#category : #'FAST-Model-Generator'
 }
@@ -146,23 +146,46 @@ FASTMetamodelGenerator >> commentForVariableExpression [
 { #category : #definition }
 FASTMetamodelGenerator >> defineClasses [
 	super defineClasses.
-	entity := builder
-		newClassNamed: #Entity
-		comment: 'any entity'.
-	expression := builder newClassNamed: #Expression comment: self commentForExpression.
-	literal := builder newClassNamed: #Literal comment: self commentForLiteral.
-	booleanLiteral := builder newClassNamed: #BooleanLiteral comment: self commentForBooleanLiteral.
-	characterLiteral := builder newClassNamed: #CharacterLiteral comment: self commentForCharacterLiteral.
-	nullPointerLiteral := builder newClassNamed: #NullPointerLiteral comment: self commentForNullPointerLiteral.
-	stringLiteral := builder newClassNamed: #StringLiteral comment: self commentForStringLiteral.
-	variableExpression := builder newClassNamed: #VariableExpression comment: self commentForVariableExpression.
-	scopableEntity := builder newClassNamed: #ScopableEntity comment: self commentForScopableEntity.
-	behaviouralEntity := builder newClassNamed: #BehaviouralEntity comment: self commentForBehaviouralEntity.
-	namedBehaviouralEntity := builder newClassNamed: #NamedBehaviouralEntity comment: self commentForNamedBehaviouralEntity.
-	statement := builder newClassNamed: #Statement comment: self commentForStatement.
-	expressionStatement := builder newClassNamed: #ExpressionStatement comment: self commentForExpressionStatement.
-	returnStatement := builder newClassNamed: #ReturnStatement comment: self commentForReturnStatement.
-	statementBlock := builder newClassNamed: #StatementBlock comment: self commentForStatementBlock
+	entity := builder newClassNamed: #Entity comment: 'any entity'.
+	expression := builder
+		newClassNamed: #Expression
+		comment: self commentForExpression.
+	literal := builder
+		newClassNamed: #Literal
+		comment: self commentForLiteral.
+	booleanLiteral := builder
+		newClassNamed: #BooleanLiteral
+		comment: self commentForBooleanLiteral.
+	characterLiteral := builder
+		newClassNamed: #CharacterLiteral
+		comment: self commentForCharacterLiteral.
+	nullPointerLiteral := builder
+		newClassNamed: #NullPointerLiteral
+		comment: self commentForNullPointerLiteral.
+	stringLiteral := builder
+		newClassNamed: #StringLiteral
+		comment: self commentForStringLiteral.
+	variableExpression := builder
+		newClassNamed: #VariableExpression
+		comment: self commentForVariableExpression.
+	behaviouralEntity := builder
+		newClassNamed: #BehaviouralEntity
+		comment: self commentForBehaviouralEntity.
+	namedBehaviouralEntity := builder
+		newClassNamed: #NamedBehaviouralEntity
+		comment: self commentForNamedBehaviouralEntity.
+	statement := builder
+		newClassNamed: #Statement
+		comment: self commentForStatement.
+	expressionStatement := builder
+		newClassNamed: #ExpressionStatement
+		comment: self commentForExpressionStatement.
+	returnStatement := builder
+		newClassNamed: #ReturnStatement
+		comment: self commentForReturnStatement.
+	statementBlock := builder
+		newClassNamed: #StatementBlock
+		comment: self commentForStatementBlock
 ]
 
 { #category : #definition }
@@ -179,13 +202,12 @@ FASTMetamodelGenerator >> defineHierarchy [
 	nullPointerLiteral --|> literal.
 	stringLiteral --|> literal.
 	variableExpression --|> expression.
-	scopableEntity --|> entity.
 	
-	behaviouralEntity --|> scopableEntity.
+	behaviouralEntity --|> tScopable.
 	behaviouralEntity --|> tWithParameters.
 	
 	namedBehaviouralEntity --|> behaviouralEntity.
-	statement --|> scopableEntity.
+	statement --|> entity .
 	expressionStatement --|> statement.
 	returnStatement --|> statement.
 	statementBlock --|> statement.
@@ -208,19 +230,19 @@ FASTMetamodelGenerator >> defineProperties [
 { #category : #definition }
 FASTMetamodelGenerator >> defineRelations [
 	super defineRelations.
-	(((expressionStatement property: #expression) comment: 'The expression of the statement') <>- ((expression property: #expressionStatementOwner) comment: 'The expression statement that own me (if it''s the case')) withoutPrimaryContainer.
+	(((expressionStatement property: #expression) comment: 'The expression of the statement') <>- ((expression property: #expressionStatementOwner) comment: 'The expression statement that own me (if it''s the case')).
 
 	(((returnStatement property: #expression) comment: 'The expression returned') <>- ((expression property: #returnOwner)
-		comment: 'The return statement that own the expression (if it''s the case)')) withoutPrimaryContainer.
+		comment: 'The return statement that own the expression (if it''s the case)')).
 		
 	(((behaviouralEntity property: #statementBlock) comment: 'Statements block of the behavioural entity')
-		<>- ((statementBlock property: #fastBehaviouralParent) comment: 'Behavioural entity containing the statement block.')) withoutPrimaryContainer.
+		<>- ((statementBlock property: #fastBehaviouralParent) comment: 'Behavioural entity containing the statement block.')).
 	
-	(((statement property: #statementContainer) comment: 'Block containing this statement.') *-<> ((statementBlock property: #statements) comment: 'Statements enclosed in this block')) withoutPrimaryContainer.
+	(((statement property: #statementContainer) comment: 'Block containing this statement.') *-<> ((statementBlock property: #statements) comment: 'Statements enclosed in this block')).
 	
-	(((tWithParameters property: #parameters) comment: 'My parameters') <>-* ((tParameter property: #parameterOwner) comment: 'parameterOwner')) withoutPrimaryContainer. 
+	(((tWithParameters property: #parameters) comment: 'My parameters') <>-* ((tParameter property: #parameterOwner) comment: 'parameterOwner')). 
 	
-	(((tWithArguments property: #arguments) comment: 'My arguments') <>-* ((tArgument property: #argumentOwner) comment: 'my owner')) withoutPrimaryContainer.
+	(((tWithArguments property: #arguments) comment: 'My arguments') <>-* ((tArgument property: #argumentOwner) comment: 'my owner')).
 ]
 
 { #category : #definition }
@@ -230,5 +252,7 @@ FASTMetamodelGenerator >> defineTraits [
 	tWithArguments := builder newTraitNamed: #TWithArguments comment: 'I have arguments'.
 	
 	tParameter := builder newTraitNamed: #TParameter comment: 'I can be a parameter'. 
-	tWithParameters := builder newTraitNamed: #TWithParameters comment: 'I have parameters'
+	tWithParameters := builder newTraitNamed: #TWithParameters comment: 'I have parameters'.
+	
+	tScopable := builder newTraitNamed: #TScopable comment: 'I define a new scope'
 ]

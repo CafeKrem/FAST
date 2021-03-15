@@ -9,9 +9,9 @@ Local variables are intended to be stored in the local entities of the body
 "
 Class {
 	#name : #FASTBehaviouralEntity,
-	#superclass : #FASTScopableEntity,
-	#traits : 'FASTTWithParameters',
-	#classTraits : 'FASTTWithParameters classTrait',
+	#superclass : #FASTEntity,
+	#traits : 'FASTTScopable + FASTTWithParameters',
+	#classTraits : 'FASTTScopable classTrait + FASTTWithParameters classTrait',
 	#instVars : [
 		'#statementBlock => FMOne type: #FASTStatementBlock opposite: #fastBehaviouralParent'
 	],
@@ -21,7 +21,7 @@ Class {
 { #category : #meta }
 FASTBehaviouralEntity class >> annotation [
 
-	<FMClass: #BehaviouralEntity super: #FASTScopableEntity>
+	<FMClass: #BehaviouralEntity super: #FASTEntity>
 	<package: #'FAST-Core-Model'>
 	<generated>
 	^self

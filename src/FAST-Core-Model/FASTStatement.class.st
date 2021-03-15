@@ -3,7 +3,7 @@ An abstract subclass which represents a source code statemnet
 "
 Class {
 	#name : #FASTStatement,
-	#superclass : #FASTScopableEntity,
+	#superclass : #FASTEntity,
 	#instVars : [
 		'#statementContainer => FMOne type: #FASTStatementBlock opposite: #statements'
 	],
@@ -13,7 +13,7 @@ Class {
 { #category : #meta }
 FASTStatement class >> annotation [
 
-	<FMClass: #Statement super: #FASTScopableEntity>
+	<FMClass: #Statement super: #FASTEntity>
 	<package: #'FAST-Core-Model'>
 	<generated>
 	^self
