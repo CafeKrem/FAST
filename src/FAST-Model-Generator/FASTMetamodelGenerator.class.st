@@ -27,7 +27,13 @@ Class {
 		'tParameter',
 		'tWithParameters',
 		'entity',
-		'tScopable'
+		'tScopable',
+		'scope',
+		'definition',
+		'objectDefinition',
+		'classDefinition',
+		'argumentDefinition',
+		'unknowDefinition'
 	],
 	#category : #'FAST-Model-Generator'
 }
@@ -185,7 +191,16 @@ FASTMetamodelGenerator >> defineClasses [
 		comment: self commentForReturnStatement.
 	statementBlock := builder
 		newClassNamed: #StatementBlock
-		comment: self commentForStatementBlock
+		comment: self commentForStatementBlock.
+	
+	scope := builder newClassNamed: #Scope.
+	definition := builder  newClassNamed: #Defintion comment: 'I am an Association Class'.
+	objectDefinition := builder  newClassNamed: #ObjectDefinition.
+	classDefinition := builder  newClassNamed: #ClassDefinition.
+	argumentDefinition := builder newClassNamed: #ArgumentDefinition.
+	unknowDefinition := builder newClassNamed: #UnknowDefinition.
+	
+	
 ]
 
 { #category : #definition }
@@ -253,7 +268,7 @@ FASTMetamodelGenerator >> defineRelations [
 	((tScopable property: #scope)  comment: 'a ScopableEntity contain a scope') <>- (scope property: #scopeOwner).
 	(scope property:#superScope ) *-<> (scope property: #subScopes).
 	(scope property: #definitions ) <>-* (definition  property: #scopeContainer).
-	1halt.
+	
 	(definition property: #references) <>-* (   (builder getTraitNamed: #TNamedEntity ) property: #rdefinition ).
 	(objectDefinition property: #classDefinition) *-<> (classDefinition property: #instances)
 ]
